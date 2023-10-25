@@ -17,7 +17,7 @@ import { Pagination } from "../components/Pagination";
 export const TablePage = () => {
   const [postToUpdate, setPostToUpdate] = useState<Post | null>(null);
   const [open, setOpen] = React.useState(false);
-  const [page, setPage] = React.useState<number>(2);
+  const [page, setPage] = React.useState<number>(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const { data, isLoading } = useGetInfoQuery({
     limit: rowsPerPage,
