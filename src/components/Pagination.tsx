@@ -1,7 +1,5 @@
 import * as React from "react";
 import TablePagination from "@mui/material/TablePagination";
-import { useGetInfoQuery } from "../services/api.service";
-import { number } from "yup";
 import { Data } from "../types/Response";
 
 type Props = {

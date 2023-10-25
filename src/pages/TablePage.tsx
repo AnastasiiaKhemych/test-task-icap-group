@@ -19,7 +19,7 @@ export const TablePage = () => {
   const [open, setOpen] = React.useState(false);
   const [page, setPage] = React.useState<number>(2);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
-  const { data, error, isLoading } = useGetInfoQuery({
+  const { data, isLoading } = useGetInfoQuery({
     limit: rowsPerPage,
     page,
   });
@@ -69,10 +69,10 @@ export const TablePage = () => {
                     aria-label="update"
                     color="primary"
                     sx={{
-                      backgroundColor: "#33CC33",
+                      backgroundColor: "#1876D1",
                       color: "white",
                       "&:hover": {
-                        backgroundColor: "green",
+                        backgroundColor: "#1768AA",
                       },
                     }}
                   >

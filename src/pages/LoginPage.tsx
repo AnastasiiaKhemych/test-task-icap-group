@@ -4,7 +4,7 @@ import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { object, string } from "yup";
 import { useLoginMutation } from "../services/api.service";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useSnackbar } from "notistack";
 
 type FormTypes = {
@@ -14,10 +14,9 @@ type FormTypes = {
 
 export const LoginPage = () => {
   const navigate = useNavigate();
-  const [notification, setNotification] = useState(false);
   const { enqueueSnackbar } = useSnackbar();
 
-  const [login, { isError, error, data }] = useLoginMutation();
+  const [login, { isError, data }] = useLoginMutation();
   const { handleSubmit, control } = useForm<FormTypes>({
     resolver: yupResolver(
       object({
@@ -31,8 +30,6 @@ export const LoginPage = () => {
     login(data);
   };
 
-  console.log("Error", isError, error, data);
-
   useEffect(() => {
     if (isError === true) {
       enqueueSnackbar("Invalid credentials", {
@@ -40,6 +37,10 @@ export const LoginPage = () => {
         anchorOrigin: { vertical: "top", horizontal: "right" },
       });
     } else if (isError === false && data !== undefined) {
+      enqueueSnackbar("Successful login", {
+        variant: "success",
+        anchorOrigin: { vertical: "top", horizontal: "right" },
+      });
       navigate("/table");
     }
   }, [isError, data]);
@@ -48,7 +49,7 @@ export const LoginPage = () => {
     <>
       <Container maxWidth="xs" sx={{ marginBlock: "120px" }}>
         <Typography variant="h3" color="primary" sx={{ marginBottom: "16px" }}>
-          Welcome
+          Sign In
         </Typography>
 
         <Box component="form" onSubmit={handleSubmit(handlePostsSubmit)}>
@@ -96,7 +97,7 @@ export const LoginPage = () => {
             fullWidth
             sx={{ marginTop: "30px" }}
           >
-            Login
+            Sign In
           </Button>
         </Box>
       </Container>

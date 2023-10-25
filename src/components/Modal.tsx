@@ -27,13 +27,11 @@ export const Modal: React.FC<ModalProps> = ({
   onClose,
   postToUpdate,
 }) => {
-  const [updateInfo, { isSuccess }] = useUpdateInfoMutation();
+  const [updateInfo, { isSuccess, isError }] = useUpdateInfoMutation();
 
   const { enqueueSnackbar } = useSnackbar();
 
-  const { handleSubmit, control, reset, setValue, formState } = useForm<
-    Omit<Post, "id">
-  >({
+  const { handleSubmit, control, reset, setValue } = useForm<Omit<Post, "id">>({
     values: {
       name: postToUpdate?.name || "",
       email: postToUpdate?.email || "",
@@ -56,16 +54,11 @@ export const Modal: React.FC<ModalProps> = ({
     ),
   });
 
-  console.log(formState);
-
   const handleUpdateSubmit = (data: any) => {
-    data.birthday_date = moment
-      .utc(data.birthday_date, "DD-MM-YY")
-      .format("YYYY-MM-DD");
+    data.birthday_date = moment.utc(data.birthday_date).format("YYYY-MM-DD");
     const body = { id: postToUpdate?.id, ...data };
 
     updateInfo(body);
-    onClose();
   };
 
   useEffect(() => {
@@ -74,8 +67,15 @@ export const Modal: React.FC<ModalProps> = ({
         variant: "success",
         anchorOrigin: { vertical: "top", horizontal: "right" },
       });
+      onClose();
     }
-  }, [isSuccess]);
+    if (isError) {
+      enqueueSnackbar(`Somthing went wrong`, {
+        variant: "error",
+        anchorOrigin: { vertical: "top", horizontal: "right" },
+      });
+    }
+  }, [isSuccess, isError]);
 
   return (
     <div>
@@ -138,7 +138,7 @@ export const Modal: React.FC<ModalProps> = ({
                       helperText: error?.message,
                     },
                   }}
-                  format="MM/dd/yyyy"
+                  format="yyyy-MM-dd"
                   value={new Date(value)}
                   onChange={onChange}
                   sx={{
@@ -259,11 +259,11 @@ export const Modal: React.FC<ModalProps> = ({
                 }}
                 variant="outlined"
                 sx={{
-                  color: "#33CC33",
-                  border: "1px solid #33CC33",
+                  color: "#1876D1",
+                  border: "1px solid #1876D1",
                   "&:hover": {
-                    border: "1px solid green",
-                    color: "green",
+                    border: "1px solid #1768AA",
+                    color: "#1768AA",
                   },
                 }}
               >
@@ -275,11 +275,11 @@ export const Modal: React.FC<ModalProps> = ({
                 variant="outlined"
                 sx={{
                   color: "white",
-                  backgroundColor: "#33CC33",
-                  border: "1px solid #33CC33",
+                  backgroundColor: "#1876D1",
+                  border: "1px solid #1876D1",
                   "&:hover": {
-                    border: "1px solid green",
-                    backgroundColor: "green",
+                    border: "1px solid #1768AA",
+                    backgroundColor: "#1768AA",
                     color: "white",
                   },
                 }}
